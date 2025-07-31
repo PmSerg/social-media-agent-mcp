@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "orchestrator-tools": {
+      "command": "python",
+      "args": ["start_mcp.py"],
+      "env": {
+        "PYTHONPATH": "."
+      }
+    }
+  }
+}
