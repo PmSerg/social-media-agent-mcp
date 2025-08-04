@@ -1,32 +1,86 @@
 """
 MCP Server for Social Media Agent System
-Deploys all Orchestrator tools as MCP endpoints
+Simple stdio interface for MCP tools
 """
 
-from agency_swarm import run_mcp
-from dotenv import load_dotenv
+import sys
+import json
 import os
+from dotenv import load_dotenv
 
 # Load environment variables
 load_dotenv()
 
-# Configuration
-HOST = "0.0.0.0"
-PORT = int(os.getenv("PORT", 8080))
-AUTH_TOKEN = os.getenv("MCP_AUTH_TOKEN")
+# Import our tools
+sys.path.append(os.path.dirname(os.path.abspath(__file__)))
+from tools.CommandProcessor import CommandProcessor
+from tools.NotionTaskManager import NotionTaskManager
+from tools.ResearchAgentProxy import ResearchAgentProxy
+from tools.CopywriterAgentProxy import CopywriterAgentProxy
 
-# Path to tools directory
-TOOLS_DIR = "./tools"
+def handle_request(request):
+    """Handle incoming MCP request"""
+    method = request.get("method")
+    params = request.get("params", {})
+    
+    # Tool mapping
+    tools = {
+        "CommandProcessor": CommandProcessor(),
+        "NotionTaskManager": NotionTaskManager(),
+        "ResearchAgentProxy": ResearchAgentProxy(),
+        "CopywriterAgentProxy": CopywriterAgentProxy()
+    }
+    
+    # List available tools
+    if method == "list_tools":
+        tool_list = []
+        for name, tool in tools.items():
+            tool_list.append({
+                "name": name,
+                "description": tool.__class__.__doc__ or "",
+                "parameters": tool.model_json_schema() if hasattr(tool, 'model_json_schema') else {}
+            })
+        return {"tools": tool_list}
+    
+    # Execute tool
+    elif method == "execute_tool":
+        tool_name = params.get("tool")
+        tool_params = params.get("parameters", {})
+        
+        if tool_name in tools:
+            tool = tools[tool_name]
+            try:
+                result = tool.run(**tool_params)
+                return {"result": result}
+            except Exception as e:
+                return {"error": str(e)}
+        else:
+            return {"error": f"Unknown tool: {tool_name}"}
+    
+    return {"error": f"Unknown method: {method}"}
 
 if __name__ == "__main__":
-    print(f"Starting MCP Server on {HOST}:{PORT}")
-    print(f"Tools directory: {TOOLS_DIR}")
+    # Simple stdio interface
+    print("MCP Server Started", file=sys.stderr)
     
-    # Run MCP server with all tools from directory
-    # This automatically converts all BaseTool classes to MCP endpoints
-    run_mcp(
-        tools_folder=TOOLS_DIR,
-        host=HOST,
-        port=PORT,
-        auth_token=AUTH_TOKEN
-    )
+    while True:
+        try:
+            # Read line from stdin
+            line = sys.stdin.readline()
+            if not line:
+                break
+                
+            # Parse JSON request
+            request = json.loads(line)
+            
+            # Handle request
+            response = handle_request(request)
+            
+            # Send response
+            print(json.dumps(response))
+            sys.stdout.flush()
+            
+        except Exception as e:
+            error_response = {"error": str(e)}
+            print(json.dumps(error_response))
+            sys.stdout.flush()
