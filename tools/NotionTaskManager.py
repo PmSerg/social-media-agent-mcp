@@ -2,7 +2,7 @@
 MCP Tool: NotionTaskManager - Creates and manages tasks in Notion
 """
 
-from .base_tool import BaseTool
+from agency_swarm import BaseTool
 from pydantic import Field
 from typing import Optional, Dict, Any
 import json

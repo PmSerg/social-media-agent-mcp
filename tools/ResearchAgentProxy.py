@@ -2,7 +2,7 @@
 MCP Tool: ResearchAgentProxy - Calls backend Research Agent via API
 """
 
-from .base_tool import BaseTool
+from agency_swarm import BaseTool
 from pydantic import Field
 from typing import Optional, Dict, Any
 import json
