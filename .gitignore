@@ -1,24 +1,18 @@
-# Python
+# Dependencies
+node_modules/
 __pycache__/
-*.py[cod]
-*$py.class
-*.so
-.Python
-venv/
-env/
-ENV/
-.venv
+*.pyc
 
 # Environment
 .env
 .env.local
 
-# IDE
-.vscode/
-.idea/
+# Logs
+*.log
 
 # OS
 .DS_Store
 
-# Logs
-*.log
+# Python
+venv/
+.venv/

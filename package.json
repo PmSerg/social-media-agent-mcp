@@ -1,0 +1,12 @@
+{
+  "name": "kea-mcp-server",
+  "version": "1.0.0",
+  "description": "MCP Server for Kea Social Media Agent System",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/server-sse": "^0.1.0"
+  }
+}
