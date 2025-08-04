@@ -6,7 +6,5 @@
   "scripts": {
     "start": "node index.js"
   },
-  "dependencies": {
-    "@modelcontextprotocol/server-sse": "^0.1.0"
-  }
+  "dependencies": {}
 }
