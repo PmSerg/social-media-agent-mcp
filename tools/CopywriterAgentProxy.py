@@ -2,7 +2,7 @@
 MCP Tool: CopywriterAgentProxy - Calls backend Copywriter Agent via API
 """
 
-from agency_swarm.tools import BaseTool
+from .base_tool import BaseTool
 from pydantic import Field
 from typing import Optional, Dict, Any, List
 import json

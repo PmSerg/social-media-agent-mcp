@@ -2,7 +2,7 @@
 MCP Tool: CommandProcessor - Parses and validates commands for social media content
 """
 
-from agency_swarm.tools import BaseTool
+from .base_tool import BaseTool
 from pydantic import Field
 import json
 import re
