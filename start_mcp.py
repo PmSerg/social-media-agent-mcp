@@ -60,27 +60,6 @@ def handle_request(request):
     return {"error": f"Unknown method: {method}"}
 
 if __name__ == "__main__":
-    # Simple stdio interface
+    # Import and run the simple HTTP server
+    import simple_server
     print("MCP Server Started", file=sys.stderr)
-    
-    while True:
-        try:
-            # Read line from stdin
-            line = sys.stdin.readline()
-            if not line:
-                break
-                
-            # Parse JSON request
-            request = json.loads(line)
-            
-            # Handle request
-            response = handle_request(request)
-            
-            # Send response
-            print(json.dumps(response))
-            sys.stdout.flush()
-            
-        except Exception as e:
-            error_response = {"error": str(e)}
-            print(json.dumps(error_response))
-            sys.stdout.flush()
