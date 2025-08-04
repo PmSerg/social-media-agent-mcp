@@ -62,7 +62,7 @@ app.get('/', (req, res) => {
 
 // Proxy MCP endpoints
 const mcpProxy = createProxyMiddleware({
-  target: `http://localhost:${MCP_PORT}`,
+  target: `http://127.0.0.1:${MCP_PORT}`, // Use IPv4 instead of localhost
   changeOrigin: true,
   onError: (err, req, res) => {
     console.error('Proxy error:', err);

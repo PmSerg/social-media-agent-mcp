@@ -28,8 +28,9 @@ if __name__ == "__main__":
     
     try:
         # Run MCP server with all tools from directories
+        # Note: run_mcp expects a single folder path, not a list
         run_mcp(
-            tools_folder=TOOL_DIRECTORIES,
+            folder=TOOL_DIRECTORIES[0],  # Use first directory
             host=HOST,
             port=PORT,
             auth_token=AUTH_TOKEN,
@@ -37,4 +38,6 @@ if __name__ == "__main__":
         )
     except Exception as e:
         print(f"Error starting MCP server: {e}")
+        import traceback
+        traceback.print_exc()
         sys.exit(1)
