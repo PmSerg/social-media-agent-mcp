@@ -21,5 +21,9 @@ EXPOSE 8080
 HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
     CMD python -c "import urllib.request; urllib.request.urlopen('http://localhost:8080/health')"
 
-# Run the MCP server
-CMD ["python", "mcp_server.py"]
+# Install Node.js dependencies
+COPY package*.json ./
+RUN npm install --production
+
+# Run the proxy server
+CMD ["npm", "start"]

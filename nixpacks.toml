@@ -1,8 +1,8 @@
 [phases.setup]
-nixPkgs = ["python311"]
+nixPkgs = ["nodejs", "python311"]
 
 [phases.install]
-cmds = ["pip install -r requirements.txt"]
+cmds = ["npm install", "pip install -r requirements.txt"]
 
 [start]
-cmd = "python mcp_server.py"
+cmd = "npm start"
